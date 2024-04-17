@@ -1,0 +1,32 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+public class Ai : MonoBehaviour
+{
+    public Transform target;
+    public float speed = 5f;
+
+    private Rigidbody2D rb;
+
+    private void Start()
+    {
+        rb = GetComponent<Rigidbody2D>();
+    }
+    void FixedUpdate() // fixed Update for physics things
+    {
+        if (target !=null)
+        {
+            Vector3 direction = target.position - transform.position;
+
+            direction.x = 0f;
+            direction.z = 0f;
+
+            direction.Normalize();
+
+            transform.position += direction * speed * Time.deltaTime;
+            //rb.MovePosition(direction * speed);
+
+        }
+    }
+}
