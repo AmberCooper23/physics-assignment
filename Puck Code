@@ -1,0 +1,57 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+public class PuckScript : MonoBehaviour
+{
+    public Rigidbody2D rb2d;
+    public float maxInitialAngle = 2f;
+    public float moveSpeed = 1f;
+    public float startX = 0f;
+    public float startY = 0f;
+    public GameManager gameManager;
+    public float SpeedMultiplier = 0.1f;
+
+
+
+    private GameObject lastPaddleHit;
+
+    private void Start()
+    {
+        InitialPush();
+        gameManager = FindObjectOfType<GameManager>();
+    }
+    private void InitialPush()
+    {
+        Vector2 dir = Vector2.left;
+        dir.y = Random.Range(-maxInitialAngle, maxInitialAngle);
+        rb2d.velocity = dir * moveSpeed;
+    }
+
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        Goal goalZone = collision.GetComponent<Goal>();
+        if (goalZone != null)
+        {
+            {
+                gameManager.OnGoalReached(goalZone.id);
+            }
+            ResetBall();
+            InitialPush();
+
+        }
+    }
+    private void ResetBall()
+    {
+        Vector2 position = new Vector2(startX, startY);
+        transform.position = position;
+    }
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+
+        Paddle paddle = collision.collider.GetComponent<Paddle>();
+        if (paddle != null)
+        {
+            rb2d.velocity *= SpeedMultiplier;
+        }
