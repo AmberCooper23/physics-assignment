@@ -1,0 +1,65 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+public class Paddle : MonoBehaviour
+{
+    public Rigidbody2D rb2d;
+    private bool puckMovement = false;
+    void Start()
+    {
+        rb2d = GetComponent<Rigidbody2D>();
+    }
+
+    void Update()
+    {
+        if (Input.GetMouseButtonDown(0))
+        {
+            Vector2 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+
+            RaycastHit2D hit = Physics2D.Raycast(mousePosition, Vector2.zero);
+
+            if (hit.collider != null && hit.collider.gameObject == gameObject)
+            {
+                puckMovement = true;
+            }
+        }
+        else if (Input.GetMouseButtonUp(0))
+        {
+            puckMovement = false;
+        }
+
+        if (puckMovement)
+        {
+            Vector2 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+
+            rb2d.MovePosition(mousePosition);
+
+        }
+        //  float movement = ProcessInput();
+        //    Move(movement);
+        //}
+        //private float ProcessInput()
+        //{
+        //    float movement = 0f;
+        //    switch (id)
+        //    {
+        //        case 1:
+        //            movement = Input.GetAxis("Horizontal");
+
+        //            break;
+        //        case 2:
+        //            movement = Input.GetAxis("Vertical");
+        //            break;
+        //    }
+        //    return movement;
+        //}
+
+        //private void Move(float movement)
+        //{
+        //    Vector2 velo = rb2d.velocity;
+        //    velo.y = moveSpeed * movement;
+        //    rb2d.velocity = velo;
+        //}
+    }
+}
